@@ -10,6 +10,11 @@ void ofApp::setup(){
     [ble setApplication:this];
 }
 
+void ofApp::exit(){
+
+    [ble close];
+}
+
 //--------------------------------------------------------------
 void ofApp::update(){
 
