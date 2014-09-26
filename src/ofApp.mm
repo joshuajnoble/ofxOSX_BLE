@@ -12,6 +12,7 @@ void ofApp::setup(){
 
 void ofApp::exit(){
 
+    [ble cleanup];
     [ble close];
 }
 
