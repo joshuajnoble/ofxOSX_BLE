@@ -79,6 +79,8 @@
 //- (IBAction) cancelScanSheet:(id)sender;
 //- (IBAction) connectButtonPressed:(id)sender;
 
+- (void) cleanup;
+
 - (void) startScan;
 - (void) stopScan;
 - (void) connectDevice:(CBPeripheral *) aPeripheral;
