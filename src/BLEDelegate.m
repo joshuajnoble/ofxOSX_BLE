@@ -99,7 +99,10 @@
     }
     
     // If we've got this far, we're connected, but we're not subscribed, so we just disconnect
-    [manager cancelPeripheralConnection:peripheral];
+    if( peripheral != nil)
+    {
+        [manager cancelPeripheralConnection:peripheral];
+    }
 }
 
 
@@ -173,7 +176,7 @@
  */
 - (void) startScan 
 {
-    [manager scanForPeripheralsWithServices:[NSArray arrayWithObject:[CBUUID UUIDWithString:@"180D"]] options:nil];
+    [manager scanForPeripheralsWithServices:[NSArray arrayWithObject:[CBUUID UUIDWithString:@"2220"]] options:nil];
 }
 
 /*
@@ -186,7 +189,9 @@
 
 - (void) connectDevice:(CBPeripheral *) aPeripheral
 {
-    [manager connectPeripheral:aPeripheral options:nil];
+    peripheral = aPeripheral;
+    [peripheral retain];
+    [manager connectPeripheral:peripheral options:nil];
 }
 
 
@@ -244,8 +249,8 @@
     [aPeripheral setDelegate:self];
     [aPeripheral discoverServices:nil];
     
-    peripheral = aPeripheral;
-    [peripheral retain];
+//    peripheral = aPeripheral;
+//    [peripheral retain];
     
     app->didConnectRFduino(aPeripheral);
 
@@ -331,7 +336,7 @@
 
 - (void) peripheral:(CBPeripheral *)aPeripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error
 {    
-    if ([service.UUID isEqual:[CBUUID UUIDWithString:@"180D"]]) 
+    if ([service.UUID isEqual:[CBUUID UUIDWithString:@"2220"]]) 
     {
         for (CBCharacteristic *aChar in service.characteristics) 
         {

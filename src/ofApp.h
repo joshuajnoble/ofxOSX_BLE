@@ -21,7 +21,7 @@ class ofApp : public ofBaseApp, public ofxRFduinoApp {
     void windowResized(int w, int h);
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
-    
+    void exit();
     
     void didDiscoverRFduino(CBPeripheral *rfduino);
     void didUpdateDiscoveredRFduino(CBPeripheral *rfduino);
@@ -31,6 +31,8 @@ class ofApp : public ofBaseApp, public ofxRFduinoApp {
     void receivedData( unsigned char *data);
     
     void onBluetooth();
+    
+    
     
     BLEDelegate *ble;
     

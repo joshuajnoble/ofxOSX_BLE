@@ -10,6 +10,12 @@ void ofApp::setup(){
     [ble setApplication:this];
 }
 
+void ofApp::exit(){
+
+    [ble cleanup];
+//    [ble close];
+}
+
 //--------------------------------------------------------------
 void ofApp::update(){
 
@@ -42,7 +48,9 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
+    
+    unsigned char msg[] = { 'h', 'e', 'l', 'l', 'o' };
+    [ble send:msg len:5];
 }
 
 //--------------------------------------------------------------
@@ -74,6 +82,7 @@ void ofApp::onBluetooth()
     else
     {
         cout << " uh oh, this computer won't work :( :( :( :( " << endl;
+        exit();
     }
 }
 
@@ -81,7 +90,7 @@ void ofApp::didDiscoverRFduino(CBPeripheral *rfduino)
 {
     cout << " didDiscoverRFduino " << rfduino.name << endl;
     
-    if( [[rfduino name] isEqualTo:@"MY RFDUINO NAME"])
+    if( [[rfduino name] isEqualTo:@"JOSHS_RFDUINO"])
     {
          [ble connectDevice:rfduino];
 //        ble->connectDevice(rfduino);
