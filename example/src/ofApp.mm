@@ -8,12 +8,26 @@ void ofApp::setup(){
     ble = [[BLEDelegate alloc] init];
     [ble initialize];
     [ble setApplication:this];
+    
+    string service = "713D0000-503E-4C75-BA94-3148F18D941E";
+    [ble setServiceID:createNSString(service)];
+    
+    tx.UUID = "713D0003-503E-4C75-BA94-3148F18D941E";
+    tx.shouldNotify = false;
+    
+    charas.push_back(tx);
+    
+    rx.UUID = "713D0002-503E-4C75-BA94-3148F18D941E";
+    rx.shouldNotify = true;
+    
+    charas.push_back(rx);
+    
+    [ble setCharacteristics:createCharacteristics(charas)];
 }
 
 void ofApp::exit(){
 
     [ble cleanup];
-//    [ble close];
 }
 
 //--------------------------------------------------------------
@@ -75,9 +89,12 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 void ofApp::onBluetooth()
 {
+    
+    string serviceID = "713D0000-503E-4C75-BA94-3148F18D941E";
+    
     if([ble isLECapableHardware])
     {
-        [ble startScan];
+        [ble startScan:createNSString(serviceID)];
     }
     else
     {
@@ -86,36 +103,35 @@ void ofApp::onBluetooth()
     }
 }
 
-void ofApp::didDiscoverRFduino(CBPeripheral *rfduino)
+void ofApp::didDiscoverBLEDevice(CBPeripheral *cb)
 {
-    cout << " didDiscoverRFduino " << rfduino.name << endl;
+    cout << " didDiscoverBLEDevice " << cb.name << endl;
     
-    if( [[rfduino name] isEqualTo:@"JOSHS_RFDUINO"])
+    if( [[cb name] isEqualTo:@"BLE_UART"])
     {
-         [ble connectDevice:rfduino];
-//        ble->connectDevice(rfduino);
+         [ble connectDevice:cb];
     }
 }
 
-void ofApp::didUpdateDiscoveredRFduino(CBPeripheral *rfduino)
+void ofApp::didUpdateDiscoveredBLEDevice(CBPeripheral *cb)
 {
-    cout << " didUpdateDiscoveredRFduino " << endl;
+    cout << " didUpdateDiscoveredBLEDevice " << endl;
 }
 
-void ofApp::didConnectRFduino(CBPeripheral *rfduino)
+void ofApp::didConnectBLEDevice(CBPeripheral *cb)
 {
-    cout << " didConnectRFduino " << endl;
+    cout << " didConnectBLEDevice " << endl;
     connected = true;
 }
 
-void ofApp::didLoadServiceRFduino(CBPeripheral *rfduino)
+void ofApp::didLoadServiceBLEDevice(CBPeripheral *cb)
 {
-    cout << " didLoadServiceRFduino " << endl;
+    cout << " didLoadServiceBLEDevice " << endl;
 }
 
-void ofApp::didDisconnectRFduino(CBPeripheral *rfduino)
+void ofApp::didDisconnectBLEDevice(CBPeripheral *cb)
 {
-    cout << " didDisconnectRFduino " << endl;
+    cout << " didDisconnectBLEDevice " << endl;
 }
 
 void ofApp::receivedData( unsigned char *data)

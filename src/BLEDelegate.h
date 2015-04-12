@@ -47,7 +47,11 @@
 
 #import <Cocoa/Cocoa.h>
 #import <IOBluetooth/IOBluetooth.h>
-#import "ofxRFDuinoApp.h"
+#import "ofxOSXBleApp.h"
+
+extern NSString *customUUID;
+extern NSString *customTX_UUID;
+extern NSString *customRX_UUID;
 
 @interface BLEDelegate : NSObject <NSApplicationDelegate, CBCentralManagerDelegate, CBPeripheralDelegate>
 {
@@ -58,30 +62,22 @@
     NSMutableArray *bleDevices;
     
     NSString *manufacturer;
+    NSString *cachedServiceID;
     
-    ofxRFduinoApp *app;
-    
-    uint16_t heartRate;
-    
-//    IBOutlet NSButton* connectButton;
+    ofxOSXBleApp *app;
     BOOL autoConnect;
-//
-//    // Progress Indicator
-//    IBOutlet NSButton * indicatorButton;
-//    IBOutlet NSProgressIndicator *progressIndicator;    
+    
+    NSArray *characteristics;
+    NSString * deviceServiceId;
 }
 
 @property (copy) NSString *manufacturer;
-//@property (copy) NSString *connected;
-
-//- (IBAction) openScanSheet:(id) sender;
-//- (IBAction) closeScanSheet:(id)sender;
-//- (IBAction) cancelScanSheet:(id)sender;
-//- (IBAction) connectButtonPressed:(id)sender;
+@property(strong, nonatomic) NSArray *characteristics;
+@property (strong, atomic) NSString* cachedServiceID;
 
 - (void) cleanup;
 
-- (void) startScan;
+- (void) startScan:(NSString*) serviceID;
 - (void) stopScan;
 - (void) connectDevice:(CBPeripheral *) aPeripheral;
 - (void) send:( unsigned char *) data len:(int)length;
@@ -89,6 +85,9 @@
 
 - (void) initialize;
 
-- (void) setApplication:( ofxRFduinoApp* )application;
+- (void) setServiceID:(NSString *)serviceId;
+- (void) setApplication:( ofxOSXBleApp* )application;
 
 @end
+
+
